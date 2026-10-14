@@ -333,6 +333,10 @@
         // The upper and lower frame never needs to be erased across hands.
         line('РАМКА / верхняя линия',489,53,498,2,decor,GOLD,94);
         line('РАМКА / правый верх',986,53,2,570,decor,GOLD,85);
+        // Off-center native shape ellipses emulate the approved thin curves.
+        // Keep separate so Photoshop masks can hide any overlap with the model.
+        oval('ДУГА / тёплый контур справа',883,-90,745,835,decor,null,ORANGE,1.8,31);
+        oval('ДУГА / тонкий розовый акцент',928,490,860,1050,decor,null,PINK,1.5,23);
         line('РАМКА / низ',65,1411,922,1.5,decor,ORANGE,92);
         line('РАМКА / розовый штрих',65,322,61,3,decor,PINK,99);
         line('ДОЛЖНОСТЬ / розовый акцент',65,589,79,3,decor,PINK,100);
