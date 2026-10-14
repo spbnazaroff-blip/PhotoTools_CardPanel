@@ -158,6 +158,7 @@
     }
     function drawLogo(g){
         var logo=group('ЗНАК FW — заменить официальным логотипом при необходимости');
+        into(logo,g);
         var mode=str('logoMode','Стилизованный знак');
         if(mode==='Стилизованный знак'){
             // Векторная стилизация по фирменным цветам. Не подменяет официальный логотип.
@@ -222,7 +223,7 @@
             for(var k=0;k<Math.min(2,rows.length);k++){
                 if(rows[k])normal('КВАЛИФИКАЦИЯ '+(i+1)+' / '+(k+1),rows[k],165,y+7+k*25,21,LIGHT,g,420,0);
             }
-            if(country) normal('КВАЛИФИКАЦИЯ '+(i+1)+' / страна',country,165,y+58,18,GOLD,g,410,50);
+            if(country) normal('КВАЛИФИКАЦИЯ '+(i+1)+' / страна',country,165,y+9+Math.min(2,rows.length)*25,18,GOLD,g,410,50);
             if(i<4) line('РАЗДЕЛИТЕЛЬ '+(i+1),164,y+101,350,1.3,g,GOLD,43);
         }
     }
