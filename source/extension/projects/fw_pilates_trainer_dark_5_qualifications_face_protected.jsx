@@ -9,7 +9,7 @@
     var src=null,doc=null,finished=false,step='Подготовка';
     var originalPhotoLayer=null;
     var C=$.global.PT_CARD_CONF||{};
-    var DW=1024,DH=1434,W=0,H=0,SX=1,SY=1,S=1;
+    var DW=1024,DH=1434,W=0,H=0,SX=1,SY=1,S=1; // Relative layout coordinates; output canvas is 2:3.
     var GOLD='#F5BD78',LIGHT='#FCF9F5',MUTED='#D6D3D0',DARK='#0F1218',PINK='#EC3978',ORANGE='#FFAA32';
     var countType=0,countShape=0;
     function trim(t){return String(t===undefined||t===null?'':t).replace(/^\s+|\s+$/g,'');}
@@ -153,13 +153,13 @@
         var ow=doc.width.as('px'),oh=doc.height.as('px');
         if(ow<500||oh<700)throw new Error('Минимальная фотография 500×700.');
         if(ow/oh>0.95)throw new Error('Нужно вертикальное фото. Горизонтальный кадр не подходит этому макету.');
-        // The approved reference is 5:7. Extend the canvas only; never
+        // The approved Ekaterina poster is 2:3. Extend the canvas only; never
         // resample or discard the source photo's original pixels.
-        var ratio=5/7, newW=ow,newH=oh;
+        var ratio=2/3, newW=ow,newH=oh;
         if(ow/oh<ratio)newW=Math.ceil(oh*ratio);
         else if(ow/oh>ratio)newH=Math.ceil(ow/ratio);
         if(newW!==ow||newH!==oh){
-            step='Добавление полей под пропорции 5:7';
+            step='Добавление прозрачных полей только при отклонении от 2:3';
             doc.resizeCanvas(px(newW),px(newH),AnchorPosition.MIDDLECENTER);
         }
         W=doc.width.as('px');H=doc.height.as('px');
