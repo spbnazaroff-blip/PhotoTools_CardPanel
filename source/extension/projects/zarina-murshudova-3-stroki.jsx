@@ -1,4 +1,4 @@
-// PT_SCHEMA={"category":"FW Pilates • единый стиль","description":"FW Pilates — Зарина Муршудова — 3 строки. Единый тёмный фирменный стиль, 2:3, PSD послойно, защита лица от затемнения.","fields":[{"id":"first","label":"Имя","type":"text","default":"Зарина"},{"id":"last","label":"Фамилия","type":"text","default":"Муршудова"},{"id":"role","label":"Основная должность","type":"text","default":"СЕРТИФИЦИРОВАННЫЙ ПРЕПОДАВАТЕЛЬ ПИЛАТЕСА"},{"id":"roleExtra","label":"Дополнительная квалификация под должностью","type":"text","default":""},{"id":"studio","label":"Бренд","type":"text","default":"FW PILATES"},{"id":"brandNote","label":"Описание бренда","type":"text","default":"СЕТЬ СТУДИЙ КЛАССИЧЕСКОГО ПИЛАТЕСА"},{"id":"location","label":"Город","type":"text","default":"САНКТ-ПЕТЕРБУРГ"},{"id":"motto","label":"Фраза сверху (каждая строка отдельно)","type":"textarea","array":true,"default":"ДВИЖЕНИЕ\nКАК ИСКУССТВО"},{"id":"section","label":"Заголовок квалификаций","type":"text","default":"МЕЖДУНАРОДНЫЕ ШКОЛЫ ПИЛАТЕСА:"},{"id":"credentials","label":"Три квалификации — по одной на строке","type":"textarea","array":true,"default":"Школа классического пилатеса FW PILATES\nТренер по танцевальным направлениям, стретчингу\nУчастник международных и российских конвенций и воркшопов"},{"id":"footer","label":"Нижний слоган","type":"text","default":"ГАРМОНИЯ ДВИЖЕНИЯ • СИЛА • КОНТРОЛЬ"},{"id":"logoMode","label":"Оригинальный логотип","type":"select","default":"Оригинальный знак + текст","options":["Оригинальный знак + текст","Оригинальный логотип целиком","Только брендовый текст (вставлю логотип вручную)"]},{"id":"logoPath","label":"Путь к оригинальному PNG/PSD логотипа (необязательно)","type":"text","default":""},{"id":"logoBlend","label":"Фон логотипа","type":"select","default":"Сохранить как в файле","options":["Сохранить как в файле","Убрать чёрный фон"]},{"id":"photoShift","label":"Фото вправо (%) — регулируй под кадр","type":"number","default":18},{"id":"shadeStrength","label":"Затемнение слева (%) — 0…100","type":"number","default":94},{"id":"fontTitle","label":"Шрифт крупного имени","type":"select","default":"Оригинальный","options":["Оригинальный","Arial-BoldMT","Montserrat-Bold","Georgia-Bold"]}]}
+// PT_SCHEMA={"category":"FW Pilates • единый стиль","description":"FW Pilates — Зарина Муршудова — 3 строки. Исправлено наложение текста на тело: для 3/4 и крупного портрета используется отдельная плавная графитовая текстовая колонка; ростовой режим сохраняет прежнюю свободную композицию. PSD послойный.","fields":[{"id":"first","label":"Имя","type":"text","default":"Зарина"},{"id":"last","label":"Фамилия","type":"text","default":"Муршудова"},{"id":"role","label":"Основная должность","type":"text","default":"СЕРТИФИЦИРОВАННЫЙ ПРЕПОДАВАТЕЛЬ ПИЛАТЕСА"},{"id":"roleExtra","label":"Дополнительная квалификация под должностью","type":"text","default":""},{"id":"studio","label":"Бренд","type":"text","default":"FW PILATES"},{"id":"brandNote","label":"Описание бренда","type":"text","default":"СЕТЬ СТУДИЙ КЛАССИЧЕСКОГО ПИЛАТЕСА"},{"id":"location","label":"Город","type":"text","default":"САНКТ-ПЕТЕРБУРГ"},{"id":"motto","label":"Фраза сверху (каждая строка отдельно)","type":"textarea","array":true,"default":"ДВИЖЕНИЕ\nКАК ИСКУССТВО"},{"id":"section","label":"Заголовок квалификаций","type":"text","default":"МЕЖДУНАРОДНЫЕ ШКОЛЫ ПИЛАТЕСА:"},{"id":"credentials","label":"Три квалификации — по одной на строке","type":"textarea","array":true,"default":"Школа классического пилатеса FW PILATES\nТренер по танцевальным направлениям, стретчингу\nУчастник международных и российских конвенций и воркшопов"},{"id":"footer","label":"Нижний слоган","type":"text","default":"ГАРМОНИЯ ДВИЖЕНИЯ • СИЛА • КОНТРОЛЬ"},{"id":"logoMode","label":"Оригинальный логотип","type":"select","default":"Оригинальный знак + текст","options":["Оригинальный знак + текст","Оригинальный логотип целиком","Только брендовый текст (вставлю логотип вручную)"]},{"id":"logoPath","label":"Путь к оригинальному PNG/PSD логотипа (необязательно)","type":"text","default":""},{"id":"logoBlend","label":"Фон логотипа","type":"select","default":"Сохранить как в файле","options":["Сохранить как в файле","Убрать чёрный фон"]},{"id":"compositionMode","label":"Кадрирование / размещение текста","type":"select","default":"3/4 — отдельная текстовая зона","options":["3/4 — отдельная текстовая зона","В рост — текст поверх фона"]},{"id":"textZoneStrength","label":"Плотность графитовой текстовой зоны (%)","type":"number","default":99},{"id":"photoShift","label":"Фото вправо (%) — регулируй под кадр","type":"number","default":18},{"id":"shadeStrength","label":"Затемнение слева (%) — 0…100","type":"number","default":94},{"id":"fontTitle","label":"Шрифт крупного имени","type":"select","default":"Оригинальный","options":["Оригинальный","Arial-BoldMT","Montserrat-Bold","Georgia-Bold"]}]}
 // Adobe Photoshop ExtendScript (invoked by PhotoTools CEP)
 // PhotoTools Studio / FW PILATES / TEAM UNIFIED / 5-11 QUALIFICATIONS / 2x3 / Photoshop ExtendScript.
 // Only the currently open photo is raster. Every overlay is a Photoshop native
@@ -294,11 +294,12 @@
         if(items.length<1||items.length>11)
             throw new Error('Макет поддерживает от 1 до 11 квалификаций.');
         var compact=items.length>6;
-        var y0=compact?746:740;
-        var row=compact?56:Math.min(119,Math.floor(635/items.length));
-        var x=compact?144:151, width=compact?346:325;
+        var safeLayout=str('compositionMode','3/4 — отдельная текстовая зона')==='3/4 — отдельная текстовая зона';
+        var y0=compact?746:(safeLayout?774:740);
+        var row=compact?56:(safeLayout?Math.min(112,Math.floor(530/items.length)):Math.min(119,Math.floor(635/items.length)));
+        var x=compact?144:151, width=compact?346:(safeLayout?300:325);
         var font=compact?18.7:21,subFont=compact?15.4:17.3;
-        var perLine=compact?36:29,maxLines=compact?2:3;
+        var perLine=compact?36:(safeLayout?27:29),maxLines=compact?2:3;
         var offset=compact?20:25;
         for(var i=0;i<items.length;i++){
             var val=trim(items[i]||'');
@@ -356,6 +357,46 @@
                  e.message+'. Попробуй открыть обычное RGB-фото и запустить снова.');
         }
     }
+        function textRailGradient(name,opacity){
+        // Fixed editorial column: 0..49% opaque graphite, feather to 0
+        // by 65% of the canvas. No hard rectangles or visible seams.
+        // It intentionally sits ABOVE the protected-person copy so body/arms
+        // entering the left column cannot compete with the text. The face,
+        // positioned to the right, retains its original brightness.
+        step='Редактируемая тёмная текстовая зона';
+        var K=sid, mk=new ActionDescriptor(), ref=new ActionReference();
+        ref.putClass(K('contentLayer'));mk.putReference(K('null'),ref);
+        var layer=new ActionDescriptor(),style=new ActionDescriptor(),g=new ActionDescriptor();
+        style.putUnitDouble(K('angle'),K('angleUnit'),0);
+        style.putEnumerated(K('type'),K('gradientType'),K('linear'));
+        style.putUnitDouble(K('scale'),K('percentUnit'),100);
+        style.putBoolean(K('dither'),true);
+        g.putString(K('name'),'FW Pilates / editorial protected text zone');
+        g.putEnumerated(K('gradientForm'),K('gradientForm'),K('customStops'));
+        g.putDouble(K('interfaceIconFrameDimmed'),4096);
+        var cs=new ActionList(),as=new ActionList();
+        var loc=[0,2000,2660,4096],alpha=[100,100,0,0];
+        for(var i=0;i<4;i++){
+            var stop=new ActionDescriptor();
+            stop.putObject(K('color'),K('RGBColor'),rgbDesc(DARK));
+            stop.putEnumerated(K('type'),K('colorStopType'),K('userStop'));
+            stop.putInteger(K('location'),loc[i]);
+            stop.putInteger(K('midpoint'),50);
+            cs.putObject(K('colorStop'),stop);
+            var tr=new ActionDescriptor();
+            tr.putUnitDouble(K('opacity'),K('percentUnit'),alpha[i]);
+            tr.putInteger(K('location'),loc[i]);
+            tr.putInteger(K('midpoint'),50);
+            as.putObject(K('transferSpec'),tr);
+        }
+        g.putList(K('colors'),cs);g.putList(K('transparency'),as);
+        style.putObject(K('gradient'),K('gradientClassEvent'),g);
+        layer.putObject(K('type'),K('gradientLayer'),style);
+        mk.putObject(K('using'),K('contentLayer'),layer);
+        executeAction(K('make'),mk,DialogModes.NO);
+        var l=doc.activeLayer;l.name=name;l.opacity=opacity;
+        return l;
+    }
         function compose(){
         // First isolate the subject from unshaded pixels. Photoshop's Select
         // Subject mask remains editable for manual hair/edge refinements.
@@ -369,6 +410,15 @@
         // Above EVERY darkening/vignette layer, below all text and graphics.
         step='Помещение защищённого человека над градиентами';
         subjectProtection.move(overlay,ElementPlacement.PLACEBEFORE);
+        var textMode=str('compositionMode','3/4 — отдельная текстовая зона');
+        var guarded=textMode==='3/4 — отдельная текстовая зона';
+        if(guarded){
+            // Place above masked subject; original portrait remains untouched.
+            // The same layer can be hidden or modified in finished PSD.
+            var rail=group('02A ТЕКСТОВАЯ ЗОНА / 3-4 / поверх руки, лицо справа без затемнения');
+            into(textRailGradient('ГРАФИТ / плотный слева, мягкий переход справа',
+                nval('textZoneStrength',99,65,100)),rail);
+        }
         var decor=group('03 ДЕКОР / отдельные векторные линии и рамка');
         // The upper and lower frame never needs to be erased across hands.
         line('РАМКА / верхняя линия',489,53,498,2,decor,GOLD,94);
@@ -392,19 +442,21 @@
         }
         var name=group('06 ИМЯ / должность / второй титул');
         title('ИМЯ / золото',str('first','Зарина').toUpperCase(),
-              62,354,74,GOLD,name,475,-8);
+              62,354,74,GOLD,name,guarded?424:475,-8);
         title('ФАМИЛИЯ / белый',str('last','Муршудова').toUpperCase(),
-              62,432,76,LIGHT,name,480,-10);
+              62,432,76,LIGHT,name,guarded?424:480,-10);
         var role=parts(str('role','СЕРТИФИЦИРОВАННЫЙ ПРЕПОДАВАТЕЛЬ ПИЛАТЕСА').toUpperCase(),29,2);
         for(var r=0;r<Math.min(2,role.length);r++)
-            normal('ДОЛЖНОСТЬ / '+(r+1),role[r],65,529+r*25,18,LIGHT,name,440,105);
+            normal('ДОЛЖНОСТЬ / '+(r+1),role[r],65,529+r*25,18,LIGHT,name,guarded?407:440,105);
         var extra=parts(str('roleExtra','').toUpperCase(),28,2);
         for(var e=0;e<Math.min(2,extra.length);e++)
             normal('ДОП. ДОЛЖНОСТЬ / '+(e+1),extra[e],65,612+e*24,17,LIGHT,name,450,130);
         var quals=group('07 ШКОЛЫ И КВАЛИФИКАЦИИ / единая серия FW');
-        normal('ЗАГОЛОВОК / сертификации',
-            str('section','МЕЖДУНАРОДНЫЕ ШКОЛЫ ПИЛАТЕСА:').toUpperCase(),
-            64,703,17.5,GOLD,quals,473,44);
+        var labelText=str('section','МЕЖДУНАРОДНЫЕ ШКОЛЫ ПИЛАТЕСА:').toUpperCase();
+        var labelLines=guarded?parts(labelText,25,2):[labelText];
+        for(var j=0;j<labelLines.length;j++)
+            normal('ЗАГОЛОВОК / сертификации '+(j+1),
+                labelLines[j],64,697+j*25,17.5,GOLD,quals,guarded?419:473,44);
         var icons=group('08 ЗНАЧКИ / редактируемые фигуры');
         drawCredentials(quals,icons);
         var footer=group('09 ФУТЕР / гармония движения');
