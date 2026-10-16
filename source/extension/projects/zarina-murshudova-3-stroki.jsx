@@ -1,4 +1,4 @@
-// PT_SCHEMA={"category":"FW Pilates • единый стиль","description":"FW Pilates — Зарина Муршудова — 3 строки. Исправление v3: портрет без затемнения, тонкая растушёвка шва ПОД выделенным человеком, компактный список в левой колонке. Единый фирменный стиль; редактируемый PSD.","fields":[{"id":"first","label":"Имя","type":"text","default":"Зарина"},{"id":"last","label":"Фамилия","type":"text","default":"Муршудова"},{"id":"role","label":"Основная должность","type":"text","default":"СЕРТИФИЦИРОВАННЫЙ ПРЕПОДАВАТЕЛЬ ПИЛАТЕСА"},{"id":"roleExtra","label":"Дополнительная квалификация под должностью","type":"text","default":""},{"id":"studio","label":"Бренд","type":"text","default":"FW PILATES"},{"id":"brandNote","label":"Описание бренда","type":"text","default":"СЕТЬ СТУДИЙ КЛАССИЧЕСКОГО ПИЛАТЕСА"},{"id":"location","label":"Город","type":"text","default":"САНКТ-ПЕТЕРБУРГ"},{"id":"motto","label":"Фраза сверху (каждая строка отдельно)","type":"textarea","array":true,"default":"ДВИЖЕНИЕ\nКАК ИСКУССТВО"},{"id":"section","label":"Заголовок квалификаций","type":"text","default":"МЕЖДУНАРОДНЫЕ ШКОЛЫ ПИЛАТЕСА:"},{"id":"credentials","label":"Три квалификации — по одной на строке","type":"textarea","array":true,"default":"Школа классического пилатеса FW PILATES\nТренер по танцевальным направлениям, стретчингу\nУчастник международных и российских конвенций и воркшопов"},{"id":"footer","label":"Нижний слоган","type":"text","default":"ГАРМОНИЯ ДВИЖЕНИЯ • СИЛА • КОНТРОЛЬ"},{"id":"logoMode","label":"Оригинальный логотип","type":"select","default":"Оригинальный знак + текст","options":["Оригинальный знак + текст","Оригинальный логотип целиком","Только брендовый текст (вставлю логотип вручную)"]},{"id":"logoPath","label":"Путь к оригинальному PNG/PSD логотипа (необязательно)","type":"text","default":""},{"id":"logoBlend","label":"Фон логотипа","type":"select","default":"Сохранить как в файле","options":["Сохранить как в файле","Убрать чёрный фон"]},{"id":"photoShift","label":"Фото вправо (%) — регулируй под кадр","type":"number","default":18},{"id":"shadeStrength","label":"Затемнение слева (%) — 0…100","type":"number","default":94},{"id":"fontTitle","label":"Шрифт крупного имени","type":"select","default":"Оригинальный","options":["Оригинальный","Arial-BoldMT","Montserrat-Bold","Georgia-Bold"]}]}
+// PT_SCHEMA={"category":"FW Pilates • единый стиль","description":"FW Pilates — Зарина Муршудова — 3 строки. Точечная доработка: мягче растушёвка шва слева и ровнее интервалы между тремя квалификациями. Лицо и фигура без затемнения; редактируемый PSD.","fields":[{"id":"first","label":"Имя","type":"text","default":"Зарина"},{"id":"last","label":"Фамилия","type":"text","default":"Муршудова"},{"id":"role","label":"Основная должность","type":"text","default":"СЕРТИФИЦИРОВАННЫЙ ПРЕПОДАВАТЕЛЬ ПИЛАТЕСА"},{"id":"roleExtra","label":"Дополнительная квалификация под должностью","type":"text","default":""},{"id":"studio","label":"Бренд","type":"text","default":"FW PILATES"},{"id":"brandNote","label":"Описание бренда","type":"text","default":"СЕТЬ СТУДИЙ КЛАССИЧЕСКОГО ПИЛАТЕСА"},{"id":"location","label":"Город","type":"text","default":"САНКТ-ПЕТЕРБУРГ"},{"id":"motto","label":"Фраза сверху (каждая строка отдельно)","type":"textarea","array":true,"default":"ДВИЖЕНИЕ\nКАК ИСКУССТВО"},{"id":"section","label":"Заголовок квалификаций","type":"text","default":"МЕЖДУНАРОДНЫЕ ШКОЛЫ ПИЛАТЕСА:"},{"id":"credentials","label":"Три квалификации — по одной на строке","type":"textarea","array":true,"default":"Школа классического пилатеса FW PILATES\nТренер по танцевальным направлениям, стретчингу\nУчастник международных и российских конвенций и воркшопов"},{"id":"footer","label":"Нижний слоган","type":"text","default":"ГАРМОНИЯ ДВИЖЕНИЯ • СИЛА • КОНТРОЛЬ"},{"id":"logoMode","label":"Оригинальный логотип","type":"select","default":"Оригинальный знак + текст","options":["Оригинальный знак + текст","Оригинальный логотип целиком","Только брендовый текст (вставлю логотип вручную)"]},{"id":"logoPath","label":"Путь к оригинальному PNG/PSD логотипа (необязательно)","type":"text","default":""},{"id":"logoBlend","label":"Фон логотипа","type":"select","default":"Сохранить как в файле","options":["Сохранить как в файле","Убрать чёрный фон"]},{"id":"photoShift","label":"Фото вправо (%) — регулируй под кадр","type":"number","default":18},{"id":"shadeStrength","label":"Затемнение слева (%) — 0…100","type":"number","default":94},{"id":"fontTitle","label":"Шрифт крупного имени","type":"select","default":"Оригинальный","options":["Оригинальный","Arial-BoldMT","Montserrat-Bold","Georgia-Bold"]}]}
 // Adobe Photoshop ExtendScript (invoked by PhotoTools CEP)
 // PhotoTools Studio / FW PILATES / TEAM UNIFIED / 5-11 QUALIFICATIONS / 2x3 / Photoshop ExtendScript.
 // Only the currently open photo is raster. Every overlay is a Photoshop native
@@ -295,7 +295,7 @@
             throw new Error('Макет поддерживает от 1 до 11 квалификаций.');
         var compact=items.length>6;
         var y0=compact?746:766;
-        var row=compact?56:Math.min(138,Math.floor(470/items.length));
+        var row=compact?56:Math.min(172,Math.floor(530/items.length));
         var x=compact?144:151, width=compact?346:276;
         var font=compact?18.7:20.0,subFont=compact?15.4:17.3;
         var perLine=compact?36:24,maxLines=compact?2:3;
@@ -359,7 +359,7 @@
         function textRailGradient(name,opacity){
         // Narrow feather below the protected person, solely to conceal the
         // visible start of a right-shifted photo at ~18% of document width.
-        // Opaque only up to 18%; smoothly transparent by about 34%.
+        // Full opacity only through ~12%, then a gentle fade ending by ~42%.
         // NEVER obscure the subject cutout with this background-only layer.
         step='Растушёвка шва на фоне, ниже слоя с человеком';
         var K=sid, mk=new ActionDescriptor(), ref=new ActionReference();
@@ -373,7 +373,7 @@
         g.putEnumerated(K('gradientForm'),K('gradientForm'),K('customStops'));
         g.putDouble(K('interfaceIconFrameDimmed'),4096);
         var cs=new ActionList(),as=new ActionList();
-        var loc=[0,760,1450,4096],alpha=[100,100,0,0];
+        var loc=[0,500,1750,4096],alpha=[100,100,0,0];
         for(var i=0;i<4;i++){
             var stop=new ActionDescriptor();
             stop.putObject(K('color'),K('RGBColor'),rgbDesc(DARK));
